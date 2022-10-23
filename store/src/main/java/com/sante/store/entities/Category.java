@@ -1,6 +1,7 @@
 package com.sante.store.entities;
 
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.NaturalId;
 
@@ -9,9 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString
 @DynamicUpdate
 public class Category implements Serializable {
     @Id
@@ -25,9 +30,6 @@ public class Category implements Serializable {
     private Date createTime;
 
     private Date updateTime;
-
-    public Category() {
-    }
 
     public Category(String name, Integer type) {
         this.name = name;
