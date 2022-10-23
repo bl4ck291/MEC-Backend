@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 public class ProductServiceImplementation implements ProductService {
@@ -32,29 +31,8 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     @Override
-    @Transactional
-    public void increaseStock(Long id, Integer amount) {
-        Product product = findOne(id);
-        if (product == null) {
-            throw new RuntimeException("Product not found");
-        }
-        int newStock = product.getStock() + amount;
-        product.setStock(newStock);
-        update(product);
-    }
-
-    @Override
-    public void decreaseStock(Long id, Integer amount) {
-        Product product = findOne(id);
-        if (product == null) {
-            throw new RuntimeException("Product not found");
-        }
-        int newStock = product.getStock() - amount;
-        if (newStock <= 0) {
-            throw new RuntimeException("Not enough stock");
-        }
-        product.setStock(newStock);
-        update(product);
+    public Product create(Product product) {
+        return productRepository.save(product);
     }
 
     @Override
@@ -63,16 +41,16 @@ public class ProductServiceImplementation implements ProductService {
         if (productToUpdate == null) {
             throw new RuntimeException("Product not found");
         }
-        return productRepository.save(product);
-    }
+        productToUpdate.setName(product.getName());
+        productToUpdate.setPrice(product.getPrice());
+        productToUpdate.setManufacturer(product.getManufacturer());
+        productToUpdate.setDescription(product.getDescription());
+        productToUpdate.setDescription(product.getDescription());
+        productToUpdate.setImageUrl(product.getImageUrl());
+        productToUpdate.setStock(product.getStock());
+        productToUpdate.setCategory(product.getCategory());
 
-    @Override
-    public Product create(Product product) {
-        Product productToCheck = findOne(product.getId());
-        if (productToCheck != null) {
-            throw new RuntimeException("Product already exists");
-        }
-        return productRepository.save(product);
+        return productRepository.save(productToUpdate);
     }
 
     @Override
@@ -82,5 +60,32 @@ public class ProductServiceImplementation implements ProductService {
             throw new RuntimeException("Product not found");
         }
         productRepository.delete(product);
+    }
+
+    @Override
+    public Product increaseStock(Long id, Integer amount) {
+        Product product = findOne(id);
+        if (product == null) {
+            throw new RuntimeException("Product not found");
+        }
+        int newStock = product.getStock() + amount;
+        product.setStock(newStock);
+        update(product);
+        return product;
+    }
+
+    @Override
+    public Product decreaseStock(Long id, Integer amount) {
+        Product product = findOne(id);
+        if (product == null) {
+            throw new RuntimeException("Product not found");
+        }
+        int newStock = product.getStock() - amount;
+        if (newStock < 0) {
+            throw new RuntimeException("Not enough stock");
+        }
+        product.setStock(newStock);
+        update(product);
+        return product;
     }
 }

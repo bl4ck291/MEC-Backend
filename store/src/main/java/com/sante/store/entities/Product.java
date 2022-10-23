@@ -7,17 +7,17 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @DynamicUpdate
 public class Product implements Serializable {
@@ -29,7 +29,6 @@ public class Product implements Serializable {
     @NotNull
     private String name;
 
-    @NotNull
     private BigDecimal price;
 
     private String manufacturer;
@@ -52,7 +51,4 @@ public class Product implements Serializable {
 
     @UpdateTimestamp
     private Date updateTime;
-
-    public Product() {
-    }
 }
