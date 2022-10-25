@@ -15,12 +15,12 @@ public class CategoryServiceImplementation implements CategoryService {
 
     @Override
     public List<Category> findAll() {
-        return categoryRepository.findAllByOrderByTypeAsc();
+        return categoryRepository.findAllByOrderByIdAsc();
     }
 
     @Override
-    public Category findByType(Integer categoryType) {
-        Category cat = categoryRepository.findByType(categoryType);
+    public Category findById(Integer categoryId) {
+        Category cat = categoryRepository.findById(categoryId).orElse(null);
         if (cat == null) {
             throw new RuntimeException("Category not found");
         }
@@ -28,12 +28,31 @@ public class CategoryServiceImplementation implements CategoryService {
     }
 
     @Override
-    public List<Category> findByCategoryTypeIn(List<Integer> categoryTypeList) {
-        return categoryRepository.findCategoryByTypeInOrderByTypeAsc(categoryTypeList);
+    public List<Category> findByIdIn(List<Integer> categoryIdList) {
+        return categoryRepository.findCategoryByIdInOrderByIdAsc(categoryIdList);
     }
 
     @Override
-    public Category save(Category category) {
+    public Category create(Category category) {
         return categoryRepository.save(category);
+    }
+
+    @Override
+    public Category update(Category category) {
+        Category categoryToUpdate = categoryRepository.findById(category.getId()).orElse(null);
+        if (categoryToUpdate == null) {
+            throw new RuntimeException("Category not found");
+        }
+        categoryToUpdate.setName(category.getName());
+        return categoryRepository.save(categoryToUpdate);
+    }
+
+    @Override
+    public void delete(Integer categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        if (category == null) {
+            throw new RuntimeException("Category not found");
+        }
+        categoryRepository.delete(category);
     }
 }

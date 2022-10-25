@@ -3,7 +3,9 @@ package com.sante.store.services;
 import com.sante.store.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface ProductService {
     Product findOne(Long id);
 

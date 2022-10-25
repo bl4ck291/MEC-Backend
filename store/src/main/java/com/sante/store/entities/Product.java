@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -29,6 +30,8 @@ public class Product implements Serializable {
     @NotNull
     private String name;
 
+    @NotNull
+    @NotEmpty
     private BigDecimal price;
 
     private String manufacturer;
