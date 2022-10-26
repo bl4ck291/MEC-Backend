@@ -31,7 +31,6 @@ public class Product implements Serializable {
     private String name;
 
     @NotNull
-    @NotEmpty
     private BigDecimal price;
 
     private String manufacturer;
@@ -39,6 +38,8 @@ public class Product implements Serializable {
     private String description;
 
     private String instructions;
+
+    private String brand;
 
     private String imageUrl;
 

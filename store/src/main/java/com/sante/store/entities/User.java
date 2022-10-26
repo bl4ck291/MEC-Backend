@@ -42,7 +42,7 @@ public class User implements Serializable {
     private String address;
 
     @NotEmpty
-    private String Phone;
+    private String phone;
 
     @NotNull
     private boolean active;

@@ -46,6 +46,7 @@ public class ProductServiceImplementation implements ProductService {
         productToUpdate.setManufacturer(product.getManufacturer());
         productToUpdate.setDescription(product.getDescription());
         productToUpdate.setDescription(product.getDescription());
+        productToUpdate.setBrand(product.getBrand());
         productToUpdate.setImageUrl(product.getImageUrl());
         productToUpdate.setStock(product.getStock());
         productToUpdate.setCategory(product.getCategory());
