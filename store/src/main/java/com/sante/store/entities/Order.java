@@ -1,20 +1,14 @@
 package com.sante.store.entities;
 
-import com.sun.istack.NotNull;
+
 import lombok.*;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
 
 
 @Entity
@@ -25,42 +19,35 @@ import java.util.Set;
 @ToString
 @DynamicUpdate
 @Table(name = "orders")
-public class Order implements Serializable {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-//            mappedBy = "orders"
-    )
-    private Set<ProductInOrder> products = new HashSet<>();
 
-    @NotNull
+    @Column(name = "totalPrice", nullable = false)
     private BigDecimal totalPrice;
 
-    @NotNull
-    @ColumnDefault("0")
-    private Integer status;
+    @Column(name = "status", nullable = false)
+    private OrderStatus status = OrderStatus.IN_ORDER;
 
-    @CreationTimestamp
-    private Date createTime;
 
-    @UpdateTimestamp
-    private Date updateTime;
-
-    @NotEmpty
+    @Column(name = "buyerName", nullable = false)
     private String buyerName;
 
-    @NaturalId
-    @NotEmpty
-    @NotNull
-    @Email
+    @Column(name = "buyerEmail", nullable = false)
     private String buyerEmail;
 
-    @NotEmpty
+    @Column(name = "buyerPhone", nullable = false)
     private String buyerPhone;
 
+    @Column(name = "createTime")
+    @CreationTimestamp
+    private LocalDate createTime;
+
+    @Column(name = "updateTime")
+    @UpdateTimestamp
+    private LocalDate updateTime;
 
 }

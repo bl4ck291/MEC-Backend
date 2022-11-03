@@ -1,19 +1,22 @@
 package com.sante.store.services.implementations;
 
+import com.sante.store.entities.Category;
 import com.sante.store.entities.Product;
 import com.sante.store.repositories.ProductRepository;
 import com.sante.store.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImplementation implements ProductService {
-    @Autowired
-    ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public Product findOne(Long id) {
@@ -26,8 +29,13 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     @Override
-    public Page<Product> findAllInCategory(Integer categoryId, Pageable pageable) {
-        return productRepository.findAllByCategoryOrderByIdAsc(categoryId, pageable);
+    public Page<Product> findAllInCategory(Category category, Pageable pageable) {
+        return productRepository.findAllByCategoryOrderByIdAsc(category, pageable);
+    }
+
+    @Override
+    public Page<Product> findByName(String name, Pageable pageable) {
+        return productRepository.findByName(name, pageable);
     }
 
     @Override

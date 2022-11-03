@@ -1,17 +1,21 @@
 package com.sante.store.services;
 
+import com.sante.store.entities.Category;
 import com.sante.store.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-@Service
+import java.util.List;
+
 public interface ProductService {
     Product findOne(Long id);
 
     Page<Product> findAll(Pageable pageable);
 
-    Page<Product> findAllInCategory(Integer category, Pageable pageable);
+    Page<Product> findAllInCategory(Category category, Pageable pageable);
+
+    Page<Product> findByName(String name, Pageable pageable);
 
     Product increaseStock(Long id, Integer amount);
 

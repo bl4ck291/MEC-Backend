@@ -2,7 +2,8 @@ package com.sante.store.controllers;
 
 import com.sante.store.entities.User;
 import com.sante.store.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+@Slf4j
 public class UserController {
-    @Autowired
-    UserService userService;
+
+     private final UserService userService;
 
     @PostMapping("/users/register")
     public ResponseEntity<User> register(@Valid @RequestBody User user) {

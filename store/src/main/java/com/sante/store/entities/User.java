@@ -8,7 +8,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 @Entity
 @Getter
@@ -17,36 +16,32 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ToString
 @Table(name = "users")
-public class User implements Serializable {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NaturalId
-    @NotEmpty
-    @NotNull
-    @Email
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @NotEmpty
-    @Size(min = 6, max = 20, message = "Password must be between 6 and 20 characters")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @NotEmpty
+    @Column(name = "firstName", nullable = false)
     private String firstName;
 
-    @NotEmpty
+    @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @NotEmpty
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @NotEmpty
+    @Column(name = "phone", nullable = false)
     private String phone;
 
-    @NotNull
+    @Column(name = "active", nullable = false)
     private boolean active;
 
-    @NotEmpty
-    private String role = "ROLE_CUSTOMER";
+    @Column(name = "role", nullable = false)
+    private Role role = Role.CUSTOMER;
 }

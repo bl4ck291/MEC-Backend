@@ -43,7 +43,8 @@ public class CategoryServiceImplementation implements CategoryService {
         if (categoryToUpdate == null) {
             throw new RuntimeException("Category not found");
         }
-        categoryToUpdate.setName(category.getName());
+        categoryToUpdate.setSingularName(category.getSingularName());
+        categoryToUpdate.setPluralName(category.getPluralName());
         return categoryRepository.save(categoryToUpdate);
     }
 
