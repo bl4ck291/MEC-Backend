@@ -1,19 +1,14 @@
 package com.sante.store.entities;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Objects;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -21,16 +16,22 @@ import java.util.Objects;
 @NoArgsConstructor
 @ToString
 @DynamicUpdate
-public class Category implements Serializable {
+public class Category {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
+    @Column(name = "singularName", nullable = false)
+    private String singularName;
 
+    @Column(name = "pluralName", nullable = false)
+    private String pluralName;
+
+    @Column(name = "createTime")
     @CreationTimestamp
-    private Date createTime;
+    private LocalDate createTime;
 
+    @Column(name = "updateTime")
     @UpdateTimestamp
-    private Date updateTime;
+    private LocalDate updateTime;
 }

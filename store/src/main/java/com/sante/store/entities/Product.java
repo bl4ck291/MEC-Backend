@@ -1,18 +1,14 @@
 package com.sante.store.entities;
 
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -21,37 +17,44 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 @DynamicUpdate
-public class Product implements Serializable {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
-    @NotEmpty
+    @Column(name = "price", nullable = false)
     private BigDecimal price;
 
+    @Column(name = "manufacturer")
     private String manufacturer;
 
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "instructions")
     private String instructions;
 
+    @Column(name = "brand", nullable = false)
+    private String brand;
+
+    @Column(name = "imageUrl")
     private String imageUrl;
 
-    @NotNull
-    @Min(0)
+    @Column(name = "stock", columnDefinition = "integer not null check(stock >= 0)")
     private Integer stock;
 
-    @ColumnDefault("0")
-    private Integer category;
-
+    @Column(name = "createTime")
     @CreationTimestamp
-    private Date createTime;
+    private LocalDate createTime;
 
+    @Column(name = "updateTime")
     @UpdateTimestamp
-    private Date updateTime;
+    private LocalDate updateTime;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Category category;
 }

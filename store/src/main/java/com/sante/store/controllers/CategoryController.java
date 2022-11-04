@@ -3,7 +3,8 @@ package com.sante.store.controllers;
 import com.sante.store.entities.Category;
 import com.sante.store.services.CategoryService;
 import com.sante.store.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +13,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
+@Slf4j
 public class CategoryController {
-    @Autowired
-    ProductService productService;
 
-    @Autowired
-    CategoryService categoryService;
+    private final ProductService productService;
+
+    private final CategoryService categoryService;
 
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getAllCategories() {

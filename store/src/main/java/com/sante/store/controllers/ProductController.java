@@ -2,7 +2,8 @@ package com.sante.store.controllers;
 
 import com.sante.store.entities.Product;
 import com.sante.store.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -12,13 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
+@Slf4j
 public class ProductController {
-    @Autowired
-    ProductService productService;
+    private final ProductService productService;
 
     @GetMapping("/products")
     public ResponseEntity<Page<Product>> findAll(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                 @RequestParam(value = "size", defaultValue = "3") Integer size) {
+                                                 @RequestParam(value = "size", defaultValue = "3") Integer size) {
         PageRequest request = PageRequest.of(page - 1, size);
         Page<Product> gottenPage = productService.findAll(request);
         return new ResponseEntity<>(gottenPage, HttpStatus.OK);
@@ -27,7 +29,7 @@ public class ProductController {
     @GetMapping("/products/{id}")
     public ResponseEntity<Product> showOne(@PathVariable("id") Long id) {
         Product productToReturn = productService.findOne(id);
-        if(productToReturn != null) {
+        if (productToReturn != null) {
             return new ResponseEntity<>(productToReturn, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -36,6 +38,16 @@ public class ProductController {
     @PostMapping("/seller/products/new")
     public ResponseEntity<Product> create(@Valid @RequestBody Product product) {
         return new ResponseEntity<>(productService.create(product), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/products/{name}")
+    public ResponseEntity<Page<Product>> findByProductName(
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "size", defaultValue = "3") Integer size,
+            @PathVariable("name") String name) {
+        PageRequest request = PageRequest.of(page - 1, size);
+        Page<Product> gottenPage = productService.findByName(name, request);
+        return new ResponseEntity<>(gottenPage, HttpStatus.OK);
     }
 
     @PutMapping("/seller/products/edit")
