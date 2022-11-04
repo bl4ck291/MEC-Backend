@@ -1,10 +1,8 @@
 package com.sante.store.dtos;
 
-import com.sante.store.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.NaturalId;
 
 import javax.validation.constraints.*;
 
@@ -12,6 +10,8 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
+
+    private Long id;
 
     @NotBlank(message = "email is mandatory")
     @Email
@@ -33,9 +33,4 @@ public class UserDto {
     @NotBlank(message = "phone is mandatory")
     private String phone;
 
-    @NotNull
-    private boolean active;
-
-    @NotNull
-    private Role role = Role.CUSTOMER;
 }

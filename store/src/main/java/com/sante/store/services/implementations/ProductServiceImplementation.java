@@ -5,13 +5,9 @@ import com.sante.store.entities.Product;
 import com.sante.store.repositories.ProductRepository;
 import com.sante.store.services.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,13 +15,13 @@ public class ProductServiceImplementation implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public Product findOne(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public Product findById(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
     @Override
     public Page<Product> findAll(Pageable pageable) {
-        return productRepository.findAllByOrderById(pageable);
+        return productRepository.findAll(pageable);
     }
 
     @Override
@@ -45,7 +41,7 @@ public class ProductServiceImplementation implements ProductService {
 
     @Override
     public Product update(Product product) {
-        Product productToUpdate = findOne(product.getId());
+        Product productToUpdate = findById(product.getId());
         if (productToUpdate == null) {
             throw new RuntimeException("Product not found");
         }
@@ -64,7 +60,7 @@ public class ProductServiceImplementation implements ProductService {
 
     @Override
     public void delete(Long id) {
-        Product product = findOne(id);
+        Product product = findById(id);
         if (product == null) {
             throw new RuntimeException("Product not found");
         }
@@ -73,7 +69,7 @@ public class ProductServiceImplementation implements ProductService {
 
     @Override
     public Product increaseStock(Long id, Integer amount) {
-        Product product = findOne(id);
+        Product product = findById(id);
         if (product == null) {
             throw new RuntimeException("Product not found");
         }
@@ -85,7 +81,7 @@ public class ProductServiceImplementation implements ProductService {
 
     @Override
     public Product decreaseStock(Long id, Integer amount) {
-        Product product = findOne(id);
+        Product product = findById(id);
         if (product == null) {
             throw new RuntimeException("Product not found");
         }

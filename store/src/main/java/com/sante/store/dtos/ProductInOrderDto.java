@@ -12,11 +12,14 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ProductInOrderDto {
     @NotNull
-    private ProductDto product;
-
-    private OrderDto order;
+    private Long productId;
 
     @NotNull
-    private UserDto user;
+    private Integer count;
+
+    private Long orderId;
+
+    @NotNull
+    private Long userId;
 
 }

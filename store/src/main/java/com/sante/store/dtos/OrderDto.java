@@ -23,6 +23,8 @@ public class OrderDto {
     @NotNull
     private OrderStatus status;
 
+    private String pickupDate;
+
     @NotBlank(message = "buyer name is mandatory")
     private String buyerName;
 

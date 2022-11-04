@@ -39,9 +39,4 @@ public class User {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "active", nullable = false)
-    private boolean active;
-
-    @Column(name = "role", nullable = false)
-    private Role role = Role.CUSTOMER;
 }

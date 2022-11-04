@@ -25,13 +25,14 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @Column(name = "totalPrice", nullable = false)
     private BigDecimal totalPrice;
 
     @Column(name = "status", nullable = false)
-    private OrderStatus status = OrderStatus.IN_ORDER;
+    private OrderStatus status = OrderStatus.ORDERING;
 
+    @Column(name = "pickupDate")
+    private LocalDate pickupDate;
 
     @Column(name = "buyerName", nullable = false)
     private String buyerName;

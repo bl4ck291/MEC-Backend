@@ -18,6 +18,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductDto implements Serializable {
 
+    private Long id;
+
     @NotBlank(message = "product name is mandatory")
     private String name;
 
@@ -41,5 +43,5 @@ public class ProductDto implements Serializable {
     private Integer stock;
 
     @NotNull
-    private CategoryDto category;
+    private Integer categoryId;
 }

@@ -1,8 +1,8 @@
 package com.sante.store.controllers;
 
+import com.sante.store.dtos.CategoryDto;
 import com.sante.store.entities.Category;
 import com.sante.store.services.CategoryService;
-import com.sante.store.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -11,41 +11,59 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class CategoryController {
 
-    private final ProductService productService;
-
     private final CategoryService categoryService;
 
     @GetMapping("/categories")
-    public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> categories = categoryService.findAll();
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
+        List<CategoryDto> categories = categoryService.findAll().stream().map(this::EntityToDto).toList();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     @GetMapping("/categories/{id}")
-    public ResponseEntity<Category> showOne(@PathVariable("id") Integer categoryId) {
-        Category category = categoryService.findById(categoryId);
+    public ResponseEntity<CategoryDto> showOne(@PathVariable("id") Integer categoryId) {
+        CategoryDto category = EntityToDto(categoryService.findByIdStrict(categoryId));
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
 
     @PostMapping("/seller/categories/new")
-    public ResponseEntity<Category> create(@Valid @RequestBody Category category) {
-        return new ResponseEntity<>(categoryService.create(category), HttpStatus.CREATED);
+    public ResponseEntity<CategoryDto> create(@Valid @RequestBody CategoryDto categoryDto) {
+        return new ResponseEntity<>(EntityToDto(categoryService.create(DtoToEntity(categoryDto))), HttpStatus.CREATED);
     }
 
     @PutMapping("/seller/categories/edit")
-    public ResponseEntity<Category> edit(@Valid @RequestBody Category category) {
-        return new ResponseEntity<>(categoryService.update(category), HttpStatus.OK);
+    public ResponseEntity<CategoryDto> edit(@Valid @RequestBody CategoryDto categoryDto) {
+        return new ResponseEntity<>(EntityToDto(categoryService.update(DtoToEntity(categoryDto))), HttpStatus.OK);
     }
 
     @DeleteMapping("/seller/categories/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Integer Id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Integer Id) {
         categoryService.delete(Id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private Category DtoToEntity(CategoryDto categoryDto) {
+        Category category = new Category();
+        if (categoryDto.getId() != null) {
+            category = categoryService.findByIdStrict(categoryDto.getId());
+        }
+        category.setId(categoryDto.getId());
+        category.setSingularName(categoryDto.getSingularName());
+        category.setPluralName(categoryDto.getPluralName());
+        return category;
+    }
+
+    private CategoryDto EntityToDto(Category category) {
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setId(category.getId());
+        categoryDto.setSingularName(category.getSingularName());
+        categoryDto.setPluralName(category.getPluralName());
+        return categoryDto;
     }
 }

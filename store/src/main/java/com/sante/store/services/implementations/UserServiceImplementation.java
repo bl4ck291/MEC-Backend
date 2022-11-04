@@ -23,8 +23,8 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public Collection<User> findAllByRole(String role) {
-        return userRepository.findAllByRole(role);
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override
@@ -44,7 +44,6 @@ public class UserServiceImplementation implements UserService {
         }
         userToUpdate.setFirstName(user.getFirstName());
         userToUpdate.setLastName(user.getLastName());
-        userToUpdate.setRole(user.getRole());
         userToUpdate.setPassword(user.getPassword());
         userToUpdate.setAddress(user.getAddress());
         userToUpdate.setPhone(user.getPhone());

@@ -9,5 +9,4 @@ import java.util.Collection;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
-    Collection<User> findAllByRole(String role);
 }

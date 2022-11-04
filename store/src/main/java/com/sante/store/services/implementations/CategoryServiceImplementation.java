@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImplementation implements CategoryService {
@@ -19,7 +20,12 @@ public class CategoryServiceImplementation implements CategoryService {
     }
 
     @Override
-    public Category findById(Integer categoryId) {
+    public Optional<Category> findById(Integer categoryId) {
+        return categoryRepository.findById(categoryId);
+    }
+
+    @Override
+    public Category findByIdStrict(Integer categoryId) {
         Category cat = categoryRepository.findById(categoryId).orElse(null);
         if (cat == null) {
             throw new RuntimeException("Category not found");
@@ -55,5 +61,10 @@ public class CategoryServiceImplementation implements CategoryService {
             throw new RuntimeException("Category not found");
         }
         categoryRepository.delete(category);
+    }
+
+    @Override
+    public Category getReference(Integer categoryId) {
+        return categoryRepository.getReferenceById(categoryId);
     }
 }

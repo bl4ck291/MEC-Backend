@@ -1,6 +1,6 @@
 A Must within these 10 days:
-- Search products
-- Check description of the products
+- Search products DONE
+- Check description of the products DONE
 - Возможность зарегистрироваться
 - Возможность войти в личный кабинет
 - Добавлять, менять количество и удалять товары из Корзины

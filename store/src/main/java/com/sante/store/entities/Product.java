@@ -55,6 +55,7 @@ public class Product {
     @UpdateTimestamp
     private LocalDate updateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
 }

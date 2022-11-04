@@ -8,7 +8,7 @@ import java.util.Collection;
 public interface UserService {
     User findByEmail(String email);
 
-    Collection<User> findAllByRole(String role);
+    User findById(Long id);
 
     User create(User user);
 
