@@ -7,7 +7,6 @@ import com.sante.store.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,6 @@ public class ProductController {
 
     @GetMapping("/products")
     public ResponseEntity<Page<ProductDto>> findAll(Pageable request) {
-
         Page<ProductDto> gottenPage = productService.findAll(request).map(this::EntityToDto);
         return new ResponseEntity<>(gottenPage, HttpStatus.OK);
     }

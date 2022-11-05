@@ -1,5 +1,5 @@
 package com.sante.store.entities;
 
 public enum OrderStatus {
-    ORDERING, ISSUED, COMPLETED, CANCELLED
+    ORDERING, ISSUED, COMPLETED, CANCELED
 }

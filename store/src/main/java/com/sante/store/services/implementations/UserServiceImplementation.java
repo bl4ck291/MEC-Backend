@@ -6,8 +6,6 @@ import com.sante.store.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-
 @Service
 public class UserServiceImplementation implements UserService {
     @Autowired
@@ -57,5 +55,10 @@ public class UserServiceImplementation implements UserService {
             throw new RuntimeException("User not found");
         }
         userRepository.delete(user);
+    }
+
+    @Override
+    public User getReference(Long id) {
+        return userRepository.getReferenceById(id);
     }
 }

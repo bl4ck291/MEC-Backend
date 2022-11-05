@@ -4,9 +4,6 @@ import com.sante.store.entities.Category;
 import com.sante.store.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 public interface ProductService {
 
@@ -27,4 +24,6 @@ public interface ProductService {
     Product create(Product product);
 
     void delete(Long id);
+
+    Product getReference(Long id);
 }

@@ -1,6 +1,6 @@
 package com.sante.store.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
@@ -8,7 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 @DynamicUpdate
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Product {
 
     @Id
@@ -49,11 +50,11 @@ public class Product {
 
     @Column(name = "createTime")
     @CreationTimestamp
-    private LocalDate createTime;
+    private Timestamp createTime;
 
     @Column(name = "updateTime")
     @UpdateTimestamp
-    private LocalDate updateTime;
+    private Timestamp updateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

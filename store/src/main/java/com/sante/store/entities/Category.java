@@ -1,14 +1,13 @@
 package com.sante.store.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -16,6 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @DynamicUpdate
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Category {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -29,9 +29,9 @@ public class Category {
 
     @Column(name = "createTime")
     @CreationTimestamp
-    private LocalDate createTime;
+    private Timestamp createTime;
 
     @Column(name = "updateTime")
     @UpdateTimestamp
-    private LocalDate updateTime;
+    private Timestamp updateTime;
 }

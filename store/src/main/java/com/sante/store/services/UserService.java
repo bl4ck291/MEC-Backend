@@ -1,9 +1,6 @@
 package com.sante.store.services;
 
 import com.sante.store.entities.User;
-import org.springframework.stereotype.Service;
-
-import java.util.Collection;
 
 public interface UserService {
     User findByEmail(String email);
@@ -15,4 +12,6 @@ public interface UserService {
     User update(User user);
 
     void delete(String email);
+
+    User getReference(Long id);
 }

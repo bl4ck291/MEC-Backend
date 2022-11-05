@@ -42,9 +42,6 @@ public class ProductServiceImplementation implements ProductService {
     @Override
     public Product update(Product product) {
         Product productToUpdate = findById(product.getId());
-        if (productToUpdate == null) {
-            throw new RuntimeException("Product not found");
-        }
         productToUpdate.setName(product.getName());
         productToUpdate.setPrice(product.getPrice());
         productToUpdate.setManufacturer(product.getManufacturer());
@@ -61,18 +58,12 @@ public class ProductServiceImplementation implements ProductService {
     @Override
     public void delete(Long id) {
         Product product = findById(id);
-        if (product == null) {
-            throw new RuntimeException("Product not found");
-        }
         productRepository.delete(product);
     }
 
     @Override
     public Product increaseStock(Long id, Integer amount) {
         Product product = findById(id);
-        if (product == null) {
-            throw new RuntimeException("Product not found");
-        }
         int newStock = product.getStock() + amount;
         product.setStock(newStock);
         update(product);
@@ -82,9 +73,6 @@ public class ProductServiceImplementation implements ProductService {
     @Override
     public Product decreaseStock(Long id, Integer amount) {
         Product product = findById(id);
-        if (product == null) {
-            throw new RuntimeException("Product not found");
-        }
         int newStock = product.getStock() - amount;
         if (newStock < 0) {
             throw new RuntimeException("Not enough stock");
@@ -92,5 +80,10 @@ public class ProductServiceImplementation implements ProductService {
         product.setStock(newStock);
         update(product);
         return product;
+    }
+
+    @Override
+    public Product getReference(Long id) {
+        return productRepository.getReferenceById(id);
     }
 }
