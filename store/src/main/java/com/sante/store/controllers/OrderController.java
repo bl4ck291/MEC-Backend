@@ -1,8 +1,10 @@
 package com.sante.store.controllers;
 
 import com.sante.store.dtos.OrderDto;
+import com.sante.store.dtos.ProductDto;
 import com.sante.store.dtos.ProductInOrderDto;
 import com.sante.store.entities.Order;
+import com.sante.store.entities.Product;
 import com.sante.store.entities.ProductInOrder;
 import com.sante.store.services.OrderService;
 import com.sante.store.services.ProductInOrderService;
@@ -15,8 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,6 +57,26 @@ public class OrderController {
         Order order = orderService.findById(id);
         order.addProductInOrder(productInOrder);
         return new ResponseEntity<>(EntityToDto(orderService.update(order)), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/orders/{id}/deleteProductInOrder/{productInOrderId}")
+    public ResponseEntity<OrderDto> deleteProduct(@PathVariable("id") Long id, @PathVariable("productInOrderId") Long productInOrderId) {
+        ProductInOrder productInOrder = productInOrderService.findById(productInOrderId);
+        Order order = orderService.findById(id);
+        order.removeProductInOrder(productInOrder);
+        return new ResponseEntity<>(EntityToDto(orderService.update(order)), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/orders/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+        orderService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/orders/clear")
+    public ResponseEntity<Void> clear() {
+        orderService.clear();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/orders/{id}/productInOrder/{productInOrderId}/count/{count}")
@@ -101,7 +123,11 @@ public class OrderController {
     private OrderDto EntityToDto(Order order) {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
-        orderDto.setProductInOrderSet(order.getProductInOrderSet());
+        Optional.ofNullable(order.getProductInOrderSet())
+                .map(productInOrders -> productInOrders.stream()
+                        .map(this::PIOEntityToDto)
+                        .collect(Collectors.toSet()))
+                .ifPresent(orderDto::setProductInOrderSet);
         orderDto.setStatus(order.getStatus());
         orderDto.setTotalPrice(order.getTotalPrice());
         orderDto.setPickupDate(order.getPickupDate());
@@ -114,7 +140,6 @@ public class OrderController {
             productInOrder = productInOrderService.findById(productInOrderDto.getId());
         }
         productInOrder.setId(productInOrderDto.getId());
-        productInOrder.setPrice(productInOrderDto.getPrice());
         productInOrder.setCount(productInOrderDto.getCount());
         productInOrder.setTotalPrice(productInOrderDto.getTotalPrice());
         return productInOrder;
@@ -123,11 +148,26 @@ public class OrderController {
     private ProductInOrderDto PIOEntityToDto(ProductInOrder productInOrder) {
         ProductInOrderDto productInOrderDto = new ProductInOrderDto();
         productInOrderDto.setId(productInOrder.getId());
-        productInOrderDto.setProductId(productInOrder.getProduct().getId());
-        productInOrderDto.setPrice(productInOrder.getPrice());
+        productInOrderDto.setProductDto(EntityToDto(productInOrder.getProduct()));
         productInOrderDto.setCount(productInOrder.getCount());
         productInOrderDto.setTotalPrice(productInOrder.getTotalPrice());
+        productInOrderDto.setOrderId(productInOrder.getOrder().getId());
         return productInOrderDto;
+    }
+
+    private ProductDto EntityToDto(Product product) {
+        ProductDto productDto = new ProductDto();
+        productDto.setId(product.getId());
+        productDto.setName(product.getName());
+        productDto.setPrice(product.getPrice());
+        productDto.setManufacturer(product.getManufacturer());
+        productDto.setDescription(product.getDescription());
+        productDto.setInstructions(product.getInstructions());
+        productDto.setBrand(product.getBrand());
+        productDto.setImageUrl(product.getImageUrl());
+        productDto.setStock(product.getStock());
+        productDto.setCategoryId(product.getCategory().getId());
+        return productDto;
     }
 
     private Set<ProductInOrderDto> PIOEntitySetToDtoSet(Set<ProductInOrder> productInOrderSet) {
