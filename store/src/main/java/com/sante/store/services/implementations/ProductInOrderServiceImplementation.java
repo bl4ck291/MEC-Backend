@@ -32,13 +32,10 @@ public class ProductInOrderServiceImplementation implements ProductInOrderServic
     public ProductInOrder create(Long id) {
         Product product = productService.findById(id);
         ProductInOrder productInOrder = new ProductInOrder();
-        //productInOrder.setProduct(product);  // Exception is thrown if this line is uncommented and no @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) is added to Category entity class
-        productInOrder.setPrice(product.getPrice());
-        productInOrder.setBrand(product.getBrand());
-        productInOrder.setImageURL(product.getImageUrl());
+        productInOrder.setProduct(product);
         productInOrder.setCount(1);
         productInOrder.calculateTotalPrice();
-        return productInOrderRepository.save(productInOrder);
+        return productInOrder;
     }
 
     @Override

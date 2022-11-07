@@ -60,11 +60,13 @@ public class Order {
 
     public void addProductInOrder(ProductInOrder productInOrder) {
         this.productInOrderSet.add(productInOrder);
+        productInOrder.setOrder(this);
         this.calculateTotalPrice();
     }
 
     public void removeProductInOrder(ProductInOrder productInOrder) {
         this.productInOrderSet.remove(productInOrder);
+        productInOrder.setOrder(null);
         this.calculateTotalPrice();
     }
 

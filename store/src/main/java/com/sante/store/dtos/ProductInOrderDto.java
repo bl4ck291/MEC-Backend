@@ -15,25 +15,16 @@ public class ProductInOrderDto {
     @NotNull
     private Long Id;
 
-    private Long productId;
-
-    @NotNull
-    private BigDecimal price;
+    private ProductDto productDto;
 
     @NotNull
     private Integer count;
 
-    @NotNull
-    private String brand;
-
-    private String imageURL;
 
     @NotNull
     private BigDecimal totalPrice;
 
     private Long orderId;
 
-    @NotNull
-    private Long userId;
 
 }

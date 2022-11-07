@@ -19,7 +19,7 @@ public class OrderDto {
 
     private Long id;
 
-    private Set<ProductInOrder> productInOrderSet;
+    private Set<ProductInOrderDto> productInOrderSet;
 
     @Min(0)
     private BigDecimal totalPrice;

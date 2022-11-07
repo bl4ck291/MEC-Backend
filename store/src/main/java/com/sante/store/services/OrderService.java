@@ -28,5 +28,7 @@ public interface OrderService {
 
     void delete(Long id);
 
+    void clear();
+
     Order getReference(Long id);
 }

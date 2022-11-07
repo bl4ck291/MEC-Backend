@@ -86,6 +86,11 @@ public class OrderServiceImplementation implements OrderService {
     }
 
     @Override
+    public void clear() {
+        orderRepository.deleteAll();
+    }
+
+    @Override
     public Order getReference(Long id) {
         return orderRepository.getReferenceById(id);
     }
