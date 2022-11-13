@@ -43,5 +43,5 @@ public class ProductDto implements Serializable {
     private Integer stock;
 
     @NotNull
-    private Integer categoryId;
+    private Long categoryId;
 }

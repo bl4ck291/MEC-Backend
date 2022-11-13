@@ -13,6 +13,8 @@ public interface ProductService {
 
     Page<Product> findAllInCategory(Category category, Pageable pageable);
 
+    Page<Product> findProductsByCategoryId(Long category_id, Pageable pageable);
+
     Page<Product> findByName(String name, Pageable pageable);
 
     Product increaseStock(Long id, Integer amount);

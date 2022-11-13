@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class CategoryDto {
 
-    private Integer id;
+    private Long id;
 
     @NotBlank(message = "category singular name is mandatory")
     private String singularName;

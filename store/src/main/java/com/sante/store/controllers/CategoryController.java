@@ -26,7 +26,7 @@ public class CategoryController {
     }
 
     @GetMapping("/categories/{id}")
-    public ResponseEntity<CategoryDto> showOne(@PathVariable("id") Integer categoryId) {
+    public ResponseEntity<CategoryDto> showOne(@PathVariable("id") Long categoryId) {
         CategoryDto category = EntityToDto(categoryService.findByIdStrict(categoryId));
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
@@ -42,7 +42,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/seller/categories/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Integer Id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Long Id) {
         categoryService.delete(Id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

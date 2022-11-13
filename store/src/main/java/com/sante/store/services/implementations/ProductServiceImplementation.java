@@ -30,6 +30,11 @@ public class ProductServiceImplementation implements ProductService {
     }
 
     @Override
+    public Page<Product> findProductsByCategoryId(Long category_id, Pageable pageable) {
+        return productRepository.findProductsByCategoryId(category_id, pageable);
+    }
+
+    @Override
     public Page<Product> findByName(String name, Pageable pageable) {
         return productRepository.findByName(name, pageable);
     }

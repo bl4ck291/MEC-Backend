@@ -20,12 +20,12 @@ public class CategoryServiceImplementation implements CategoryService {
     }
 
     @Override
-    public Optional<Category> findById(Integer categoryId) {
+    public Optional<Category> findById(Long categoryId) {
         return categoryRepository.findById(categoryId);
     }
 
     @Override
-    public Category findByIdStrict(Integer categoryId) {
+    public Category findByIdStrict(Long categoryId) {
         Category cat = categoryRepository.findById(categoryId).orElse(null);
         if (cat == null) {
             throw new RuntimeException("Category not found");
@@ -34,7 +34,7 @@ public class CategoryServiceImplementation implements CategoryService {
     }
 
     @Override
-    public List<Category> findByIdIn(List<Integer> categoryIdList) {
+    public List<Category> findByIdIn(List<Long> categoryIdList) {
         return categoryRepository.findCategoryByIdInOrderByIdAsc(categoryIdList);
     }
 
@@ -55,7 +55,7 @@ public class CategoryServiceImplementation implements CategoryService {
     }
 
     @Override
-    public void delete(Integer categoryId) {
+    public void delete(Long categoryId) {
         Category category = categoryRepository.findById(categoryId).orElse(null);
         if (category == null) {
             throw new RuntimeException("Category not found");
@@ -64,7 +64,7 @@ public class CategoryServiceImplementation implements CategoryService {
     }
 
     @Override
-    public Category getReference(Integer categoryId) {
+    public Category getReference(Long categoryId) {
         return categoryRepository.getReferenceById(categoryId);
     }
 }
