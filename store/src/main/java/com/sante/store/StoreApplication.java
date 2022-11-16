@@ -30,22 +30,15 @@ public class StoreApplication {
 	CommandLineRunner run(UserService userService) {
 		return args -> {
 			userService.saveRole(new Role(null, "ROLE_CUSTOMER"));
-			userService.saveRole(new Role(null, "ROLE_MANAGER"));
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
-			userService.saveRole(new Role(null, "ROLE_SUPER_ADMIN"));
 
 			userService.saveUser(new User(null, "john@sante.com", "1234", "John", "Travolta", "California", "+71", new ArrayList<>()));
-			userService.saveUser(new User(null, "will@sante.com", "1234", "Will", "Smith", "California", "+72", new ArrayList<>()));
-			userService.saveUser(new User(null, "jim@sante.com", "1234", "Jim", "Carry", "California", "+73", new ArrayList<>()));
-			userService.saveUser(new User(null, "arnold@sante.com", "1234", "Arnold", "Schwarzenegger", "California", "+74", new ArrayList<>()));
+			userService.saveUser(new User(null, "jim@sante.com", "1234", "Jim", "Carry", "California", "+72", new ArrayList<>()));
+			userService.saveUser(new User(null, "arnold@sante.com", "1234", "Arnold", "Schwarzenegger", "California", "+73", new ArrayList<>()));
 
 			userService.addRoleToUser("john@sante.com", "ROLE_CUSTOMER");
-			userService.addRoleToUser("john@sante.com", "ROLE_MANAGER");
-			userService.addRoleToUser("will@sante.com", "ROLE_MANAGER");
 			userService.addRoleToUser("jim@sante.com", "ROLE_ADMIN");
-			userService.addRoleToUser("arnold@sante.com", "ROLE_SUPER_ADMIN");
 			userService.addRoleToUser("arnold@sante.com", "ROLE_ADMIN");
-			userService.addRoleToUser("arnold@sante.com", "ROLE_CUSTOMER");
 
 		};
 	}

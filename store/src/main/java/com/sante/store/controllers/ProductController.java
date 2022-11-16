@@ -39,15 +39,15 @@ public class ProductController {
         return new ResponseEntity<>(EntityToDto(productToReturn), HttpStatus.OK);
     }
 
-    @PostMapping("/seller/products/new")
-    public ResponseEntity<ProductDto> create(@Valid @RequestBody ProductDto productDto) {
-        return new ResponseEntity<>(EntityToDto(productService.create(DtoToEntity(productDto))), HttpStatus.CREATED);
-    }
-
     @GetMapping("/products/search/{name}")
     public ResponseEntity<Page<ProductDto>> findByProductName(@PathVariable("name") String name, Pageable request) {
         Page<ProductDto> gottenPage = productService.findByName(name, request).map(this::EntityToDto);
         return new ResponseEntity<>(gottenPage, HttpStatus.OK);
+    }
+
+    @PostMapping("/seller/products/new")
+    public ResponseEntity<ProductDto> create(@Valid @RequestBody ProductDto productDto) {
+        return new ResponseEntity<>(EntityToDto(productService.create(DtoToEntity(productDto))), HttpStatus.CREATED);
     }
 
     @PutMapping("/seller/products/edit")

@@ -35,8 +35,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers(GET, "/login/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll();
-        http.authorizeRequests().antMatchers("/users/**").hasAuthority("ROLE_ADMIN");
+
+        http.authorizeRequests().antMatchers("/swagger-ui/**", "/v3/api-docs/**",
+                "/users/register", "/login/**", "/token/refresh/**",
+                "/categories",
+                "/categories/**",
+                "/products",
+                "/products/**").permitAll();
+
+        http.authorizeRequests().antMatchers("/users/byEmail/**", "/users/edit",
+                "/orders/**/productInOrder/**/count/**",
+                "/orders/**/issue",
+                "/orders/**/cancel",
+                "/orders/**/addProduct/**",
+                "/orders/create/**",
+                "/orders/**",
+                "/orders/search/**",
+                "/orders/**/deleteProductInOrder/**",
+                "/orders/delete/**",
+                "/orders/clear").hasAnyAuthority("ROLE_ADMIN", "ROLE_CUSTOMER");
+
+        http.authorizeRequests().antMatchers("/seller/**").hasAuthority("ROLE_ADMIN");
+
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

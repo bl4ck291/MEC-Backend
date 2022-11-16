@@ -28,12 +28,6 @@ public class OrderController {
     private final OrderService orderService;
     private final ProductInOrderService productInOrderService;
 
-    @GetMapping("/orders")
-    public ResponseEntity<Page<OrderDto>> findAll(Pageable request) {
-        Page<OrderDto> gottenPage = orderService.findAll(request).map(this::EntityToDto);
-        return new ResponseEntity<>(gottenPage, HttpStatus.OK);
-    }
-
     @GetMapping("/orders/{id}")
     public ResponseEntity<OrderDto> showOne(@PathVariable("id") Long id) {
         Order orderToReturn = orderService.findById(id);
@@ -91,19 +85,25 @@ public class OrderController {
         return new ResponseEntity<>(EntityToDto(orderService.issue(id)), HttpStatus.OK);
     }
 
-    @PutMapping("/orders/{id}/setPickupDate/{pickupDate}")
+    @PutMapping("/orders/{id}/cancel")
+    public ResponseEntity<OrderDto> cancel(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(EntityToDto(orderService.cancel(id)), HttpStatus.OK);
+    }
+
+    @GetMapping("/seller/orders")
+    public ResponseEntity<Page<OrderDto>> findAll(Pageable request) {
+        Page<OrderDto> gottenPage = orderService.findAll(request).map(this::EntityToDto);
+        return new ResponseEntity<>(gottenPage, HttpStatus.OK);
+    }
+
+    @PutMapping("/seller/orders/{id}/setPickupDate/{pickupDate}")
     public ResponseEntity<OrderDto> setPickupDate(@PathVariable("id") Long id, @PathVariable("pickupDate") String pickupDate) {
         LocalDate pickupDateToSet = LocalDate.parse(pickupDate);
         return new ResponseEntity<>(EntityToDto(orderService.setPickupDate(id, pickupDateToSet)), HttpStatus.OK);
     }
 
 
-    @PutMapping("/orders/{id}/cancel")
-    public ResponseEntity<OrderDto> cancel(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(EntityToDto(orderService.cancel(id)), HttpStatus.OK);
-    }
-
-    @PutMapping("/orders/{id}/complete")
+    @PutMapping("/seller/orders/{id}/complete")
     public ResponseEntity<OrderDto> complete(@PathVariable("id") Long id) {
         return new ResponseEntity<>(EntityToDto(orderService.complete(id)), HttpStatus.OK);
     }
