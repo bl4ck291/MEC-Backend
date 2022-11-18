@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 public class Category {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "singularName", nullable = false)
     private String singularName;

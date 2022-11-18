@@ -1,10 +1,12 @@
 package com.sante.store.dtos;
 
+import com.sante.store.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
+import java.util.Collection;
 
 @Data
 @AllArgsConstructor
@@ -32,5 +34,7 @@ public class UserDto {
 
     @NotBlank(message = "phone is mandatory")
     private String phone;
+
+    private Collection<Role> roles;
 
 }

@@ -18,6 +18,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findAllByCategoryOrderByIdAsc(Category category, Pageable pageable);
 
+    Page<Product> findProductsByCategoryId(Long category_id, Pageable pageable);
+
     @Query("select p from Product as p where lower(p.name) like concat('%', lower(:name), '%')")
     Page<Product> findByName(@Param("name") String name,Pageable pageable);
 }

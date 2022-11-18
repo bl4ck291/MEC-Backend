@@ -10,17 +10,17 @@ import java.util.Optional;
 public interface CategoryService {
     List<Category> findAll();
 
-    Optional<Category> findById(Integer categoryId);
+    Optional<Category> findById(Long categoryId);
 
-    Category findByIdStrict(Integer categoryId);
+    Category findByIdStrict(Long categoryId);
 
-    List<Category> findByIdIn(List<Integer> categoryIdList);
+    List<Category> findByIdIn(List<Long> categoryIdList);
 
     Category create(Category category);
 
     Category update(Category category);
 
-    void delete(Integer categoryId);
+    void delete(Long categoryId);
 
-    Category getReference(Integer categoryId);
+    Category getReference(Long categoryId);
 }
