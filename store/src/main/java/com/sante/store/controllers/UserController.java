@@ -79,8 +79,9 @@ public class UserController {
         return new ResponseEntity<>(EntityToDto(userService.getUser(email)), HttpStatus.OK);
     }
 
-    @PutMapping("/users/edit")
-    public ResponseEntity<UserDto> edit(@Valid @RequestBody UserDto userDto) {
+    @PutMapping("/users/edit/{id}")
+    public ResponseEntity<UserDto> edit(@Valid @RequestBody UserDto userDto, @PathVariable("id") Long id) {
+        userDto.setId(id);
         return new ResponseEntity<>(EntityToDto(userService.saveUser(DtoToEntity(userDto))), HttpStatus.OK);
     }
 
@@ -103,9 +104,12 @@ public class UserController {
     private User DtoToEntity(UserDto userDto) {
         User user = new User();
         if (userDto.getId() != null) {
-            user = userService.getUser(userDto.getEmail());
+            user = userService.getUserById(userDto.getId());
         }
-        user.setId(userDto.getId());
+        User existingUser = userService.getUser(userDto.getEmail());
+        if (existingUser != null && !Objects.equals(existingUser.getId(), user.getId())) {
+            throw new RuntimeException("This user is already exists");
+        }
         user.setPassword(userDto.getPassword());
         user.setEmail(userDto.getEmail());
         user.setFirstName(userDto.getFirstName());
