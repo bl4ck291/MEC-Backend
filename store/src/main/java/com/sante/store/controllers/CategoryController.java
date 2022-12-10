@@ -2,6 +2,7 @@ package com.sante.store.controllers;
 
 import com.sante.store.dtos.CategoryDto;
 import com.sante.store.entities.Category;
+import com.sante.store.entities.User;
 import com.sante.store.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,8 +38,9 @@ public class CategoryController {
         return new ResponseEntity<>(EntityToDto(categoryService.create(DtoToEntity(categoryDto))), HttpStatus.CREATED);
     }
 
-    @PutMapping("/seller/categories/edit")
-    public ResponseEntity<CategoryDto> edit(@Valid @RequestBody CategoryDto categoryDto) {
+    @PutMapping("/seller/categories/edit/{id}")
+    public ResponseEntity<CategoryDto> edit(@Valid @RequestBody CategoryDto categoryDto, @PathVariable("id") Long id) {
+        categoryDto.setId(id);
         return new ResponseEntity<>(EntityToDto(categoryService.update(DtoToEntity(categoryDto))), HttpStatus.OK);
     }
 
@@ -52,8 +55,11 @@ public class CategoryController {
         if (categoryDto.getId() != null) {
             category = categoryService.findByIdStrict(categoryDto.getId());
         }
-        category.setId(categoryDto.getId());
-        category.setSingularName(categoryDto.getSingularName());
+        Category existingCategory = categoryService.getCategory(categoryDto.getPluralName());
+        if (existingCategory != null
+                && !Objects.equals(existingCategory.getId(), category.getId())) {
+            throw new RuntimeException("This category is already exists");
+        }
         category.setPluralName(categoryDto.getPluralName());
         return category;
     }
@@ -61,7 +67,6 @@ public class CategoryController {
     private CategoryDto EntityToDto(Category category) {
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setId(category.getId());
-        categoryDto.setSingularName(category.getSingularName());
         categoryDto.setPluralName(category.getPluralName());
         return categoryDto;
     }

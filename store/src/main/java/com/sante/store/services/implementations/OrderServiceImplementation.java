@@ -61,6 +61,9 @@ public class OrderServiceImplementation implements OrderService {
     @Override
     public Order setPickupDate(Long id, LocalDate pickupDate) {
         Order order = findById(id);
+        if(pickupDate.isBefore(LocalDate.now())) {
+           throw new RuntimeException("Please use valid pickup date");
+        }
         order.setPickupDate(pickupDate);
         return orderRepository.save(order);
     }

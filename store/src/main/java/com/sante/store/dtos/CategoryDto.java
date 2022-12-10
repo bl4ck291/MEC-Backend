@@ -16,9 +16,6 @@ public class CategoryDto {
 
     private Long id;
 
-    @NotBlank(message = "category singular name is mandatory")
-    private String singularName;
-
     @NotBlank(message = "category plural name is mandatory")
     private String pluralName;
 

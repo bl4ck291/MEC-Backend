@@ -21,10 +21,7 @@ public class Category {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "singularName", nullable = false)
-    private String singularName;
-
-    @Column(name = "pluralName", nullable = false)
+    @Column(name = "pluralName", nullable = false, unique = true)
     private String pluralName;
 
     @Column(name = "createTime")

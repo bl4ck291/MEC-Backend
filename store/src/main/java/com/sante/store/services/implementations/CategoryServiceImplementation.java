@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -26,15 +27,15 @@ public class CategoryServiceImplementation implements CategoryService {
 
     @Override
     public Category findByIdStrict(Long categoryId) {
-        Category cat = categoryRepository.findById(categoryId).orElse(null);
-        if (cat == null) {
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        if (category == null) {
             throw new RuntimeException("Category not found");
         }
-        return cat;
+        return category;
     }
 
     @Override
-    public List<Category> findByIdIn(List<Long> categoryIdList) {
+    public List<Category> findByIdId(List<Long> categoryIdList) {
         return categoryRepository.findCategoryByIdInOrderByIdAsc(categoryIdList);
     }
 
@@ -49,7 +50,6 @@ public class CategoryServiceImplementation implements CategoryService {
         if (categoryToUpdate == null) {
             throw new RuntimeException("Category not found");
         }
-        categoryToUpdate.setSingularName(category.getSingularName());
         categoryToUpdate.setPluralName(category.getPluralName());
         return categoryRepository.save(categoryToUpdate);
     }
@@ -67,4 +67,10 @@ public class CategoryServiceImplementation implements CategoryService {
     public Category getReference(Long categoryId) {
         return categoryRepository.getReferenceById(categoryId);
     }
+
+    @Override
+    public Category getCategory(String pluralName) {
+        return categoryRepository.categoryByPluralName(pluralName);
+    }
+
 }
