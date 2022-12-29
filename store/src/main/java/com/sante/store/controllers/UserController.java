@@ -74,7 +74,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/byEmail/{email}")
+    @GetMapping("seller/users/byEmail/{email}")
     public ResponseEntity<UserDto> getByEmail(@Valid @PathVariable("email") String email) {
         return new ResponseEntity<>(EntityToDto(userService.getUser(email)), HttpStatus.OK);
     }
@@ -116,6 +116,8 @@ public class UserController {
         user.setLastName(userDto.getLastName());
         user.setPhone(userDto.getPhone());
         user.setAddress(userDto.getAddress());
+        user.setRoles(userDto.getRoles());
+
         return user;
     }
 
@@ -128,6 +130,8 @@ public class UserController {
         userDto.setLastName(user.getLastName());
         userDto.setPhone(user.getPhone());
         userDto.setAddress(user.getAddress());
+        userDto.setRoles(user.getRoles());
+
         return userDto;
     }
 }

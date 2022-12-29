@@ -3,11 +3,10 @@ package com.sante.store.controllers;
 import com.sante.store.dtos.OrderDto;
 import com.sante.store.dtos.ProductDto;
 import com.sante.store.dtos.ProductInOrderDto;
-import com.sante.store.entities.Order;
-import com.sante.store.entities.Product;
-import com.sante.store.entities.ProductInOrder;
+import com.sante.store.entities.*;
 import com.sante.store.services.OrderService;
 import com.sante.store.services.ProductInOrderService;
+import com.sante.store.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,6 +25,9 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     private final OrderService orderService;
+
+    private final UserService userService;
+
     private final ProductInOrderService productInOrderService;
 
     @GetMapping("/orders/{id}")
@@ -40,15 +42,22 @@ public class OrderController {
         return new ResponseEntity<>(gottenPage, HttpStatus.OK);
     }
 
-    @PostMapping("/orders/create")
-    public ResponseEntity<OrderDto> create() {
-        return new ResponseEntity<>(EntityToDto(orderService.create()), HttpStatus.OK);
+    @PostMapping("/orders/create/{userId}")
+    public ResponseEntity<OrderDto> create(@PathVariable("userId") Long userId) {
+        User user = userService.getUserById(userId);
+        return new ResponseEntity<>(EntityToDto(orderService.create(user)), HttpStatus.OK);
     }
 
     @PutMapping("/orders/{id}/addProduct/{productId}")
     public ResponseEntity<OrderDto> addProduct(@PathVariable("id") Long id, @PathVariable("productId") Long productId) {
         ProductInOrder productInOrder = productInOrderService.create(productId);
         Order order = orderService.findById(id);
+        ProductInOrder existingProductInOrder = productInOrderService.findById(productId);
+        if (existingProductInOrder != null) {
+            throw new RuntimeException("This product in order is already exists");
+        } else if (order.getStatus() != OrderStatus.ORDERING) {
+            throw new RuntimeException("Can add products only to OrderStatus.Ordering");
+        }
         order.addProductInOrder(productInOrder);
         return new ResponseEntity<>(EntityToDto(orderService.update(order)), HttpStatus.OK);
     }
@@ -96,6 +105,23 @@ public class OrderController {
         return new ResponseEntity<>(gottenPage, HttpStatus.OK);
     }
 
+    @GetMapping("/orders/ordering/{userId}")
+    public ResponseEntity<Page<OrderDto>> productsInCart(Pageable request, @PathVariable Long userId) {
+        Page<OrderDto> gottenPage = orderService.productsInCart(userId ,request).map(this::EntityToDto);
+        return new ResponseEntity<>(gottenPage, HttpStatus.OK);
+    }
+    @GetMapping("/orders/issued/{userId}")
+    public ResponseEntity<Page<OrderDto>> orderIssued(Pageable request, @PathVariable Long userId) {
+        Page<OrderDto> gottenPage = orderService.orderIssued(userId ,request).map(this::EntityToDto);
+        return new ResponseEntity<>(gottenPage, HttpStatus.OK);
+    }
+
+    @GetMapping("/orders/completed/{userId}")
+    public ResponseEntity<Page<OrderDto>> orderCompleted(Pageable request, @PathVariable Long userId) {
+        Page<OrderDto> gottenPage = orderService.orderCompleted(userId ,request).map(this::EntityToDto);
+        return new ResponseEntity<>(gottenPage, HttpStatus.OK);
+    }
+
     @PutMapping("/seller/orders/{id}/setPickupDate/{pickupDate}")
     public ResponseEntity<OrderDto> setPickupDate(@PathVariable("id") Long id, @PathVariable("pickupDate") String pickupDate) {
         LocalDate pickupDateToSet = LocalDate.parse(pickupDate);
@@ -131,6 +157,7 @@ public class OrderController {
         orderDto.setStatus(order.getStatus());
         orderDto.setTotalPrice(order.getTotalPrice());
         orderDto.setPickupDate(order.getPickupDate());
+        orderDto.setUserId(order.getUser().getId());
         return orderDto;
     }
 

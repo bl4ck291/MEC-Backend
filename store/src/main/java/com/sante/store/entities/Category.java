@@ -15,7 +15,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @ToString
 @DynamicUpdate
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Category {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
