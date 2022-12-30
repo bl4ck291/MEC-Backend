@@ -73,6 +73,9 @@ public class OrderServiceImplementation implements OrderService {
     @Override
     public Order issue(Long id) {
         Order order = findById(id);
+        if(order.getProductInOrderSet().isEmpty()) {
+            throw  new RuntimeException("Empty order cannot be issued");
+        }
         order.setStatus(OrderStatus.ISSUED);
         order.setTotalPrice(BigDecimal.ZERO);
         return orderRepository.save(order);

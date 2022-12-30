@@ -1,6 +1,7 @@
 package com.sante.store.controllers;
 
 import com.sante.store.dtos.ProductDto;
+import com.sante.store.entities.Category;
 import com.sante.store.entities.Product;
 import com.sante.store.services.CategoryService;
 import com.sante.store.services.ProductService;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -50,8 +52,9 @@ public class ProductController {
         return new ResponseEntity<>(EntityToDto(productService.create(DtoToEntity(productDto))), HttpStatus.CREATED);
     }
 
-    @PutMapping("/seller/products/edit")
-    public ResponseEntity<ProductDto> edit(@Valid @RequestBody ProductDto productDto) {
+    @PutMapping("/seller/products/edit/{id}")
+    public ResponseEntity<ProductDto> edit(@Valid @RequestBody ProductDto productDto, @PathVariable("id") Long id) {
+        productDto.setId(id);
         return new ResponseEntity<>(EntityToDto(productService.update(DtoToEntity(productDto))), HttpStatus.OK);
     }
 
