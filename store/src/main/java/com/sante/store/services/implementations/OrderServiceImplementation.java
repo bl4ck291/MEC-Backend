@@ -2,9 +2,9 @@ package com.sante.store.services.implementations;
 
 import com.sante.store.entities.Order;
 import com.sante.store.entities.OrderStatus;
+import com.sante.store.entities.User;
 import com.sante.store.repositories.OrderRepository;
 import com.sante.store.services.OrderService;
-import com.sante.store.services.ProductInOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +35,21 @@ public class OrderServiceImplementation implements OrderService {
     }
 
     @Override
+    public Page<Order> productsInCart(Long userId, Pageable pageable) {
+        return orderRepository.findOrderByStatus(userId, OrderStatus.ORDERING, pageable);
+    }
+
+    @Override
+    public Page<Order> orderIssued(Long userId, Pageable pageable) {
+        return orderRepository.findOrderByStatus(userId, OrderStatus.ISSUED, pageable);
+    }
+
+    @Override
+    public Page<Order> orderCompleted(Long userId, Pageable pageable) {
+        return orderRepository.findOrderByStatus(userId, OrderStatus.COMPLETED, pageable);
+    }
+
+    @Override
     public Order update(Order order) {
         Order orderToUpdate = findById(order.getId());
         orderToUpdate.setStatus(order.getStatus());
@@ -44,9 +59,14 @@ public class OrderServiceImplementation implements OrderService {
     }
 
     @Override
-    public Order create() {
+    public Order create(User user) {
+        Order existingOrder = orderRepository.findOrderByStatus(user.getId(), OrderStatus.ORDERING);
+        if(existingOrder != null) {
+            throw new RuntimeException("Cannot create new order you already have not completed order");
+        }
         Order order = new Order();
         order.setStatus(OrderStatus.ORDERING);
+        order.setUser(user);
         return orderRepository.save(order);
     }
 
@@ -61,6 +81,9 @@ public class OrderServiceImplementation implements OrderService {
     @Override
     public Order setPickupDate(Long id, LocalDate pickupDate) {
         Order order = findById(id);
+        if(pickupDate.isBefore(LocalDate.now())) {
+           throw new RuntimeException("Please use valid pickup date");
+        }
         order.setPickupDate(pickupDate);
         return orderRepository.save(order);
     }

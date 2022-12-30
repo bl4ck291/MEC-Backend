@@ -3,7 +3,6 @@ package com.sante.store;
 import com.sante.store.entities.Role;
 import com.sante.store.entities.User;
 import com.sante.store.services.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

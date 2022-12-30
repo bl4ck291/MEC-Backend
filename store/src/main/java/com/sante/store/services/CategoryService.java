@@ -14,7 +14,7 @@ public interface CategoryService {
 
     Category findByIdStrict(Long categoryId);
 
-    List<Category> findByIdIn(List<Long> categoryIdList);
+    List<Category> findByIdId(List<Long> categoryIdList);
 
     Category create(Category category);
 
@@ -23,4 +23,7 @@ public interface CategoryService {
     void delete(Long categoryId);
 
     Category getReference(Long categoryId);
+
+    Category getCategory(String pluralName);
+
 }

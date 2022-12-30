@@ -20,7 +20,7 @@ public class ProductInOrderServiceImplementation implements ProductInOrderServic
 
     @Override
     public ProductInOrder findById(Long id) {
-        return productInOrderRepository.findById(id).orElseThrow(() -> new RuntimeException("ProductInOrder not found"));
+        return productInOrderRepository.findById(id).orElse(null);
     }
 
     @Override
