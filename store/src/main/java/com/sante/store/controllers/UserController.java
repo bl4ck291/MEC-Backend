@@ -116,7 +116,7 @@ public class UserController {
         user.setLastName(userDto.getLastName());
         user.setPhone(userDto.getPhone());
         user.setAddress(userDto.getAddress());
-        user.setRoles(userDto.getRoles());
+//        user.setRoles(userDto.getRoles());
 
         return user;
     }
